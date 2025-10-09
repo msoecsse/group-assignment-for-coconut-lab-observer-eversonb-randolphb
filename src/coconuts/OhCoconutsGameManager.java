@@ -110,4 +110,10 @@ public class OhCoconutsGameManager {
     public boolean done() {
         return coconutsInFlight == 0 && gameTick >= MAX_TIME;
     }
+
+    public void shootLaser() {
+        LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
+        gamePane.getChildren().add(thisObj.getImageView());
+        registerObject(thisObj);
+    }
 }

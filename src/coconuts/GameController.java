@@ -1,6 +1,7 @@
 package coconuts;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,7 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        System.out.println("Starting");
         theGame = new OhCoconutsGameManager((int) (gamePane.getPrefHeight() - theBeach.getPrefHeight()),
                 (int) (gamePane.getPrefWidth()), gamePane);
 
@@ -46,6 +48,8 @@ public class GameController {
             theGame.getCrab().crawl(10);
         } else if (keyEvent.getCode() == KeyCode.LEFT && !theGame.done()) {
             theGame.getCrab().crawl(-10);
+        } else if (keyEvent.getCode() == KeyCode.UP && !theGame.done()){
+            theGame.shootLaser();
         } else if (keyEvent.getCode() == KeyCode.SPACE) {
             if (!started) {
                 coconutTimeline.play();
