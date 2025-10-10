@@ -44,13 +44,17 @@ public class GameController {
 
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.RIGHT && !theGame.done()) {
-            theGame.getCrab().crawl(10);
-        } else if (keyEvent.getCode() == KeyCode.LEFT && !theGame.done()) {
-            theGame.getCrab().crawl(-10);
-        } else if (keyEvent.getCode() == KeyCode.UP && !theGame.done()){
-            theGame.shootLaser();
-        } else if (keyEvent.getCode() == KeyCode.SPACE) {
+        if (started) {
+            if (keyEvent.getCode() == KeyCode.RIGHT && !theGame.done()) {
+                theGame.getCrab().crawl(10);
+            } else if (keyEvent.getCode() == KeyCode.LEFT && !theGame.done()) {
+                theGame.getCrab().crawl(-10);
+            } else if (keyEvent.getCode() == KeyCode.UP && !theGame.done()){
+                theGame.shootLaser();
+            }
+        }
+
+        if (keyEvent.getCode() == KeyCode.SPACE) {
             if (!started) {
                 coconutTimeline.play();
                 started = true;

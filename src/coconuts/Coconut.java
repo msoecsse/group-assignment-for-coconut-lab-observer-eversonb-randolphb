@@ -16,4 +16,19 @@ public class Coconut extends HittableIslandObject {
     public void step() {
         y += 5;
     }
+
+    @Override
+    public boolean canHit(IslandObject other) {
+        return !other.isFalling();
+    }
+
+    @Override
+    public boolean isFalling() {
+        return true;
+    }
+
+    @Override
+    public boolean isTouching(IslandObject other) {
+        return other.y - other.width == this.y && Math.abs(this.x - other.x) <= other.width;
+    }
 }
