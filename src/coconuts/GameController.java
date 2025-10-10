@@ -1,6 +1,7 @@
 package coconuts;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,11 +24,17 @@ public class GameController {
     private Pane gamePane;
     @FXML
     private Pane theBeach;
+    @FXML
+    private Label coconutKilledLabel;
+    @FXML
+    private Label coconutsHitGroundLabel;
     private OhCoconutsGameManager theGame;
 
     @FXML
     public void initialize() {
         System.out.println("Starting");
+        Scoreboard sc = new Scoreboard(coconutKilledLabel, coconutsHitGroundLabel);
+
         theGame = new OhCoconutsGameManager((int) (gamePane.getPrefHeight() - theBeach.getPrefHeight()),
                 (int) (gamePane.getPrefWidth()), gamePane);
 
@@ -45,12 +52,14 @@ public class GameController {
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {
         if (started) {
-            if (keyEvent.getCode() == KeyCode.RIGHT && !theGame.done()) {
-                theGame.getCrab().crawl(10);
-            } else if (keyEvent.getCode() == KeyCode.LEFT && !theGame.done()) {
-                theGame.getCrab().crawl(-10);
-            } else if (keyEvent.getCode() == KeyCode.UP && !theGame.done()){
-                theGame.shootLaser();
+            if (theGame.getCrab() != null) {
+                if (keyEvent.getCode() == KeyCode.RIGHT && !theGame.done()) {
+                    theGame.getCrab().crawl(10);
+                } else if (keyEvent.getCode() == KeyCode.LEFT && !theGame.done()) {
+                    theGame.getCrab().crawl(-10);
+                } else if (keyEvent.getCode() == KeyCode.UP && !theGame.done()) {
+                    theGame.shootLaser();
+                }
             }
         }
 

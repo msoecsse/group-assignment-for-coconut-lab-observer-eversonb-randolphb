@@ -101,6 +101,9 @@ public class OhCoconutsGameManager {
             if (thisObj instanceof HittableIslandObject) {
                 hittableIslandSubjects.remove((HittableIslandObject) thisObj);
             }
+            if (thisObj.getClass().equals(theCrab.getClass())){
+                killCrab();
+            }
         }
         scheduledForRemoval.clear();
     }
@@ -114,8 +117,10 @@ public class OhCoconutsGameManager {
     }
 
     public void shootLaser() {
-        LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
-        gamePane.getChildren().add(thisObj.getImageView());
-        registerObject(thisObj);
+        if (theCrab != null) {
+            LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
+            gamePane.getChildren().add(thisObj.getImageView());
+            registerObject(thisObj);
+        }
     }
 }
