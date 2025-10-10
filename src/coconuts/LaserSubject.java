@@ -16,5 +16,5 @@ package coconuts;
 public interface LaserSubject {
     void attach(LaserObserver observer);
     void detach(LaserObserver observer);
-    void notifyObservers();
+    void notifyLaserObservers();
 }

@@ -16,5 +16,5 @@ package coconuts;
 public interface CrabSubject {
     void attach(CrabObserver observer);
     void detach(CrabObserver observer);
-    void notifyObservers();
+    void notifyCrabObservers();
 }

@@ -16,5 +16,5 @@ package coconuts;
 public interface GroundSubject {
     void attach(GroundObserver observer);
     void detach(GroundObserver observer);
-    void notifyObservers();
+    void notifyGroundObservers();
 }
