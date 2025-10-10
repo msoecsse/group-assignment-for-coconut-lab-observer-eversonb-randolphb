@@ -9,11 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 // This class manages the game, including tracking all island objects and detecting when they hit
-public class OhCoconutsGameManager implements CoconutSubject {
+public class OhCoconutsGameManager{
     private final Collection<IslandObject> allObjects = new LinkedList<>();
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
-    private final List<CoconutObserver> coconutObservers = new LinkedList<>();
+    HitEvent hitEvent = new HitEvent();
 
     private final int height, width;
     private final int DROP_INTERVAL = 10;
@@ -93,6 +93,16 @@ public class OhCoconutsGameManager implements CoconutSubject {
                     // theBeach will implement Observer, if thisObj or hittableObject are falling, notify all observers
                     // that a coconut has been destroyed
 
+                    Coconut nut = new Coconut(this, 1);
+                    LaserBeam laser = new LaserBeam(this, 1, 1);
+                    if (hittableObject.getClass().equals(nut.getClass())){
+                        //hitEvent.notifyCoconutObservers;
+                    } else if (hittableObject.getClass().equals(theCrab.getClass())){
+                        //hitEvent.notifyCrabObservers;
+                    } else if (thisObj.getClass().equals(laser.getClass())){
+                        //hitEvent.notifyLaserObservers;
+                    }
+
                     scheduledForRemoval.add(hittableObject);
                     gamePane.getChildren().remove(hittableObject.getImageView());
                 }
@@ -124,23 +134,6 @@ public class OhCoconutsGameManager implements CoconutSubject {
             LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
             gamePane.getChildren().add(thisObj.getImageView());
             registerObject(thisObj);
-        }
-    }
-
-    @Override
-    public void attach(CoconutObserver observer) {
-        this.coconutObservers.add(observer);
-    }
-
-    @Override
-    public void detach(CoconutObserver observer) {
-        this.coconutObservers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers(HitEvent event) {
-        for (CoconutObserver observer : coconutObservers) {
-            observer.notifyEvent(event);
         }
     }
 }
