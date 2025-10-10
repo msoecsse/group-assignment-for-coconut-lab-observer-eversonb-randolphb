@@ -6,12 +6,15 @@ import javafx.scene.layout.Pane;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 // This class manages the game, including tracking all island objects and detecting when they hit
-public class OhCoconutsGameManager {
+public class OhCoconutsGameManager implements CoconutSubject {
     private final Collection<IslandObject> allObjects = new LinkedList<>();
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
+    private final List<CoconutObserver> coconutObservers = new LinkedList<>();
+
     private final int height, width;
     private final int DROP_INTERVAL = 10;
     private final int MAX_TIME = 100;
@@ -121,6 +124,23 @@ public class OhCoconutsGameManager {
             LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
             gamePane.getChildren().add(thisObj.getImageView());
             registerObject(thisObj);
+        }
+    }
+
+    @Override
+    public void attach(CoconutObserver observer) {
+        this.coconutObservers.add(observer);
+    }
+
+    @Override
+    public void detach(CoconutObserver observer) {
+        this.coconutObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(HitEvent event) {
+        for (CoconutObserver observer : coconutObservers) {
+            observer.notifyEvent(event);
         }
     }
 }
