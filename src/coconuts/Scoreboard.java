@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
  * @author randolphben
  * @version created on 10/10/2025 11:47 AM
  */
-public class Scoreboard implements CoconutObserver {
+public class Scoreboard implements LaserObserver, GroundObserver, CrabObserver {
     private final Label coconutKilledLabel;
     private final Label coconutsHitGroundLabel;
     private int killed = 0;
@@ -24,11 +24,22 @@ public class Scoreboard implements CoconutObserver {
         this.coconutsHitGroundLabel = hitGroundLabel;
     }
 
+
     @Override
-    public void notifyEvent(HitEvent event) {
-        coconutKilledLabel.setText("Coconuts killed: " + killed);
+    public void notifyLaser(){
         killed++;
-        coconutsHitGroundLabel.setText("Coconuts on ground: " + grounded);
+        coconutKilledLabel.setText("Coconuts killed: " + killed);
+    }
+
+    @Override
+    public void notifyGround(){
         grounded++;
+        coconutsHitGroundLabel.setText("Coconuts on ground: " + grounded);
+    }
+
+    @Override
+    public void notifyCrab(){
+        coconutKilledLabel.setText("Game over!");
+        coconutsHitGroundLabel.setText("Killed: " + killed + "\nGrounded: " + grounded);
     }
 }
