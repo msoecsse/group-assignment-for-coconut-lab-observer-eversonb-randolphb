@@ -18,6 +18,10 @@ public class Crab extends HittableIslandObject {
         // do nothing
     }
 
+    public int hittable_height() {
+        return y - WIDTH;
+    }
+
     // Captures the crab crawling sideways
     public void crawl(int offset) {
         x += offset;

@@ -29,6 +29,6 @@ public class Coconut extends HittableIslandObject {
 
     @Override
     public boolean isTouching(IslandObject other) {
-        return other.y - other.width == this.y && Math.abs(this.x - other.x) <= other.width;
+        return this.y >= other.hittable_height() && Math.abs(this.x - other.x) <= other.width;
     }
 }
