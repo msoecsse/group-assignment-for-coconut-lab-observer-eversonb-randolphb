@@ -33,10 +33,10 @@ public class GameController {
     @FXML
     public void initialize() {
         System.out.println("Starting");
-        Scoreboard sc = new Scoreboard(coconutKilledLabel, coconutsHitGroundLabel);
+
 
         theGame = new OhCoconutsGameManager((int) (gamePane.getPrefHeight() - theBeach.getPrefHeight()),
-                (int) (gamePane.getPrefWidth()), gamePane);
+                (int) (gamePane.getPrefWidth()), gamePane, coconutKilledLabel, coconutsHitGroundLabel);
 
         gamePane.setFocusTraversable(true);
 

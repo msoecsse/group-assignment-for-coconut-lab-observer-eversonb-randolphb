@@ -2,6 +2,7 @@ package coconuts;
 
 // https://stackoverflow.com/questions/42443148/how-to-correctly-separate-view-from-model-in-javafx
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
 import java.util.Collection;
@@ -14,6 +15,7 @@ public class OhCoconutsGameManager{
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
     HitEvent hitEvent = new HitEvent();
+    private Scoreboard scoreboard;
 
     private final int height, width;
     private final int DROP_INTERVAL = 10;
@@ -25,7 +27,7 @@ public class OhCoconutsGameManager{
     private int coconutsInFlight = 0;
     private int gameTick = 0;
 
-    public OhCoconutsGameManager(int height, int width, Pane gamePane) {
+    public OhCoconutsGameManager(int height, int width, Pane gamePane, Label killedLabel, Label groundedLabel) {
         this.height = height;
         this.width = width;
         this.gamePane = gamePane;
@@ -38,6 +40,11 @@ public class OhCoconutsGameManager{
         registerObject(theBeach);
         if (theBeach.getImageView() != null)
             System.out.println("Unexpected image view for beach");
+
+        this.scoreboard = new Scoreboard(killedLabel, groundedLabel);
+        hitEvent.attach((CrabObserver) scoreboard);
+        hitEvent.attach((GroundObserver) scoreboard);
+        hitEvent.attach((LaserObserver) scoreboard);
     }
 
     private void registerObject(IslandObject object) {
@@ -96,11 +103,15 @@ public class OhCoconutsGameManager{
                     Coconut nut = new Coconut(this, 1);
                     LaserBeam laser = new LaserBeam(this, 1, 1);
                     if (hittableObject.getClass().equals(nut.getClass())){
-                        //hitEvent.notifyCoconutObservers;
+                        // coconut shot
+                        hitEvent.notifyLaserObservers();
                     } else if (hittableObject.getClass().equals(theCrab.getClass())){
-                        //hitEvent.notifyCrabObservers;
+                        // crab died
+                        hitEvent.notifyCrabObservers();
                     } else if (thisObj.getClass().equals(laser.getClass())){
-                        //hitEvent.notifyLaserObservers;
+                        // coconut on ground
+                        // TODO: move this notify to a different spot. Program doesn't recognize that coconut hit ground
+                        hitEvent.notifyGroundObservers();
                     }
 
                     scheduledForRemoval.add(hittableObject);
