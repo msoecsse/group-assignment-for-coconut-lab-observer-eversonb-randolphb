@@ -12,6 +12,10 @@ public class Coconut extends HittableIslandObject {
         super(game, x, 0, WIDTH, coconutImage);
     }
 
+    public int hittable_height() {
+        return y + WIDTH;
+    }
+
     @Override
     public void step() {
         y += 5;

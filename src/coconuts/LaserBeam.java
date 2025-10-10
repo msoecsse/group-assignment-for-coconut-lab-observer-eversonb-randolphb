@@ -23,7 +23,7 @@ public class LaserBeam extends IslandObject {
 
     @Override
     public boolean isTouching(IslandObject other) {
-        return Math.abs(other.y - this.y) <= 10 && Math.abs(other.x - this.x) <= other.width;
+        return this.y <= other.hittable_height() && Math.abs(other.x - this.x) <= other.width;
     }
 
     @Override
