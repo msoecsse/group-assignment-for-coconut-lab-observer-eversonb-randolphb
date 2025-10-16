@@ -24,7 +24,6 @@ public class Scoreboard implements LaserObserver, GroundObserver, CrabObserver {
         this.coconutsHitGroundLabel = hitGroundLabel;
     }
 
-
     @Override
     public void notifyLaser(){
         killed++;
@@ -33,13 +32,17 @@ public class Scoreboard implements LaserObserver, GroundObserver, CrabObserver {
 
     @Override
     public void notifyGround(){
-        grounded++;
-        coconutsHitGroundLabel.setText("Coconuts on ground: " + grounded);
+        if (coconutKilledLabel.getText().equals("Game over!")) {
+            return;
+        } else{
+            grounded++;
+            coconutsHitGroundLabel.setText("Coconuts on ground: " + grounded);
+        }
     }
 
     @Override
     public void notifyCrab(){
         coconutKilledLabel.setText("Game over!");
-        coconutsHitGroundLabel.setText("Killed: " + killed + "\nGrounded: " + grounded);
+        coconutsHitGroundLabel.setText("Killed: " + killed + " Grounded: " + grounded);
     }
 }

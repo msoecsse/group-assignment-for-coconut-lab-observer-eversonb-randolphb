@@ -7,7 +7,6 @@ import javafx.scene.layout.Pane;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 // This class manages the game, including tracking all island objects and detecting when they hit
 public class OhCoconutsGameManager{
@@ -18,7 +17,7 @@ public class OhCoconutsGameManager{
     private Scoreboard scoreboard;
 
     private final int height, width;
-    private final int DROP_INTERVAL = 10;
+    private final int DROP_INTERVAL = 25;
     private final int MAX_TIME = 100;
     private Pane gamePane;
     private Crab theCrab;
@@ -82,6 +81,9 @@ public class OhCoconutsGameManager{
     }
 
     public void killCrab() {
+        hitEvent.detach((CrabObserver) scoreboard);
+        hitEvent.detach((GroundObserver) scoreboard);
+        hitEvent.detach((LaserObserver) scoreboard);
         theCrab = null;
     }
 
@@ -92,6 +94,7 @@ public class OhCoconutsGameManager{
         }
 
         scheduledForRemoval.clear();
+        IslandObject prevObj = null;
         for (IslandObject thisObj : allObjects) {
             for (HittableIslandObject hittableObject : hittableIslandSubjects) {
                 if (thisObj.canHit(hittableObject) && thisObj.isTouching(hittableObject)) {
@@ -99,10 +102,15 @@ public class OhCoconutsGameManager{
                     LaserBeam laser = new LaserBeam(this, 1, 1);
                     if (thisObj.getClass().equals(laser.getClass()) && hittableObject.getClass().equals(nut.getClass())) {
                         // coconut shot
-                        hitEvent.notifyLaserObservers();
+                        if (!thisObj.equals(prevObj) && !thisObj.isDead){
+                            hitEvent.notifyLaserObservers();
 
-                        scheduledForRemoval.add(thisObj);
-                        gamePane.getChildren().remove(thisObj.getImageView());
+                            scheduledForRemoval.add(thisObj);
+                            gamePane.getChildren().remove(thisObj.getImageView());
+                            hittableObject.isDead = true;
+                        }
+                        prevObj = thisObj;
+
                     } else if (thisObj.getClass().equals(theBeach.getClass())){
                         // Coconut hit ground
                         hitEvent.notifyGroundObservers();
@@ -113,6 +121,7 @@ public class OhCoconutsGameManager{
 
                     scheduledForRemoval.add(hittableObject);
                     gamePane.getChildren().remove(hittableObject.getImageView());
+                    hittableObject.isDead = true;
                 }
             }
         }

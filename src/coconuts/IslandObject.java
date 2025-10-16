@@ -11,6 +11,7 @@ public abstract class IslandObject {
     protected final OhCoconutsGameManager containingGame;
     protected int x, y;
     ImageView imageView = null;
+    public boolean isDead;
 
     public IslandObject(OhCoconutsGameManager game, int x, int y, int width, Image image) {
         containingGame = game;
