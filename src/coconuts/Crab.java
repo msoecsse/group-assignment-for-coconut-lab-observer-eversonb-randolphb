@@ -16,7 +16,6 @@ public class Crab extends HittableIslandObject {
     @Override
     public void step() {
         // do nothing
-        System.out.println("Crab step");
     }
 
     public int hittable_height() {

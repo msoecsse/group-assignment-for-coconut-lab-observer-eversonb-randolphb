@@ -90,28 +90,25 @@ public class OhCoconutsGameManager{
             o.step();
             o.display();
         }
-        // see if objects hit; the hit itself is something you will add
-        // you can't change the lists while processing them, so collect
-        //   items to be removed in the first pass and remove them later
+
         scheduledForRemoval.clear();
         for (IslandObject thisObj : allObjects) {
             for (HittableIslandObject hittableObject : hittableIslandSubjects) {
                 if (thisObj.canHit(hittableObject) && thisObj.isTouching(hittableObject)) {
-                    // theBeach will implement Observer, if thisObj or hittableObject are falling, notify all observers
-                    // that a coconut has been destroyed
-
                     Coconut nut = new Coconut(this, 1);
                     LaserBeam laser = new LaserBeam(this, 1, 1);
-                    if (hittableObject.getClass().equals(nut.getClass())){
+                    if (thisObj.getClass().equals(laser.getClass()) && hittableObject.getClass().equals(nut.getClass())) {
                         // coconut shot
                         hitEvent.notifyLaserObservers();
-                    } else if (hittableObject.getClass().equals(theCrab.getClass())){
+
+                        scheduledForRemoval.add(thisObj);
+                        gamePane.getChildren().remove(thisObj.getImageView());
+                    } else if (thisObj.getClass().equals(theBeach.getClass())){
+                        // Coconut hit ground
+                        hitEvent.notifyGroundObservers();
+                    } else if (theCrab != null && hittableObject.getClass().equals(theCrab.getClass())){
                         // crab died
                         hitEvent.notifyCrabObservers();
-                    } else if (thisObj.getClass().equals(laser.getClass())){
-                        // coconut on ground
-                        // TODO: move this notify to a different spot. Program doesn't recognize that coconut hit ground
-                        hitEvent.notifyGroundObservers();
                     }
 
                     scheduledForRemoval.add(hittableObject);
@@ -125,7 +122,7 @@ public class OhCoconutsGameManager{
             if (thisObj instanceof HittableIslandObject) {
                 hittableIslandSubjects.remove((HittableIslandObject) thisObj);
             }
-            if (thisObj.getClass().equals(theCrab.getClass())){
+            if (theCrab != null && thisObj.getClass().equals(theCrab.getClass())){
                 killCrab();
             }
         }
