@@ -22,6 +22,11 @@ public class Coconut extends HittableIslandObject {
     }
 
     @Override
+    public boolean isCoconut() {
+        return true;
+    }
+
+    @Override
     public boolean canHit(IslandObject other) {
         return !other.isFalling() && !other.isGroundObject();
     }

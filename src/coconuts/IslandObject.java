@@ -33,6 +33,13 @@ public abstract class IslandObject {
 
     public void display() {
         if (imageView != null) {
+
+            if (x > containingGame.getWidth() - width) {
+                x =  containingGame.getWidth() - width;
+            } else if (x < 0) {
+                x = 0;
+            }
+
             imageView.setLayoutX(x);
             imageView.setLayoutY(y);
         }
@@ -59,6 +66,18 @@ public abstract class IslandObject {
     }
 
     public boolean isTouching(IslandObject other) {
+        return false;
+    }
+
+    public boolean isLaser() {
+        return false;
+    }
+
+    public boolean isCoconut() {
+        return false;
+    }
+
+    public boolean isCrab() {
         return false;
     }
 

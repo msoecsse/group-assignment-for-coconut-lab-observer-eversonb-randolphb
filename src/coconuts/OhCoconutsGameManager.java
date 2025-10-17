@@ -13,7 +13,7 @@ public class OhCoconutsGameManager{
     private final Collection<IslandObject> allObjects = new LinkedList<>();
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
-    HitEvent hitEvent = new HitEvent();
+    HitEvent hitEvent = new HitEvent(this);
     private Scoreboard scoreboard;
 
     private final int height, width;
@@ -94,44 +94,16 @@ public class OhCoconutsGameManager{
         }
 
         scheduledForRemoval.clear();
-        IslandObject prevObj = null;
-        for (IslandObject thisObj : allObjects) {
-            for (HittableIslandObject hittableObject : hittableIslandSubjects) {
-                if (thisObj.canHit(hittableObject) && thisObj.isTouching(hittableObject)) {
-                    Coconut nut = new Coconut(this, 1);
-                    LaserBeam laser = new LaserBeam(this, 1, 1);
-                    if (thisObj.getClass().equals(laser.getClass()) && hittableObject.getClass().equals(nut.getClass())) {
-                        // coconut shot
-                        if (!thisObj.equals(prevObj) && !thisObj.isDead){
-                            hitEvent.notifyLaserObservers();
 
-                            scheduledForRemoval.add(thisObj);
-                            gamePane.getChildren().remove(thisObj.getImageView());
-                            hittableObject.isDead = true;
-                        }
-                        prevObj = thisObj;
+        hitEvent.checkForHits(allObjects, hittableIslandSubjects);
 
-                    } else if (thisObj.getClass().equals(theBeach.getClass())){
-                        // Coconut hit ground
-                        hitEvent.notifyGroundObservers();
-                    } else if (theCrab != null && hittableObject.getClass().equals(theCrab.getClass())){
-                        // crab died
-                        hitEvent.notifyCrabObservers();
-                    }
-
-                    scheduledForRemoval.add(hittableObject);
-                    gamePane.getChildren().remove(hittableObject.getImageView());
-                    hittableObject.isDead = true;
-                }
-            }
-        }
         // actually remove the objects as needed
         for (IslandObject thisObj : scheduledForRemoval) {
             allObjects.remove(thisObj);
-            if (thisObj instanceof HittableIslandObject) {
+            if (thisObj.isHittable()) {
                 hittableIslandSubjects.remove((HittableIslandObject) thisObj);
             }
-            if (theCrab != null && thisObj.getClass().equals(theCrab.getClass())){
+            if (thisObj.isCrab()){
                 killCrab();
             }
         }
@@ -140,6 +112,8 @@ public class OhCoconutsGameManager{
 
     public void scheduleForDeletion(IslandObject islandObject) {
         scheduledForRemoval.add(islandObject);
+        gamePane.getChildren().remove(islandObject.getImageView());
+        islandObject.isDead = true;
     }
 
     public boolean done() {
@@ -147,10 +121,8 @@ public class OhCoconutsGameManager{
     }
 
     public void shootLaser() {
-        if (theCrab != null) {
-            LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
-            gamePane.getChildren().add(thisObj.getImageView());
-            registerObject(thisObj);
-        }
+        LaserBeam thisObj = new LaserBeam(this, (int) theCrab.getImageView().getLayoutY(), theCrab.x);
+        gamePane.getChildren().add(thisObj.getImageView());
+        registerObject(thisObj);
     }
 }

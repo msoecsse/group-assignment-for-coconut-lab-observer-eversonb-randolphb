@@ -14,6 +14,11 @@ public class Crab extends HittableIslandObject {
     }
 
     @Override
+    public boolean isCrab() {
+        return true;
+    }
+
+    @Override
     public void step() {
         // do nothing
     }
