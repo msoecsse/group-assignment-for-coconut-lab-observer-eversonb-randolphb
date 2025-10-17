@@ -11,7 +11,8 @@ import java.util.LinkedList;
 /**
  * Manages the game, including tracing all island objects and detecting when they hit
  * Modified by: eversonb and randolphb
-  */
+ * Date modified: 10/17/2025
+ */
 public class OhCoconutsGameManager{
     private final Collection<IslandObject> allObjects = new LinkedList<>();
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
