@@ -32,12 +32,8 @@ public class Scoreboard implements LaserObserver, GroundObserver, CrabObserver {
 
     @Override
     public void notifyGround(){
-        if (coconutKilledLabel.getText().equals("Game over!")) {
-            return;
-        } else{
-            grounded++;
-            coconutsHitGroundLabel.setText("Coconuts on ground: " + grounded);
-        }
+        grounded++;
+        coconutsHitGroundLabel.setText("Coconuts on ground: " + grounded);
     }
 
     @Override

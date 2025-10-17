@@ -3,9 +3,12 @@ package coconuts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-// an object in the game, either something coming from the island or falling on it
-// Each island object has a location and can determine if it hits another island object
-// This is a domain class; do not introduce JavaFX or other GUI components here
+/** an object in the game, either something coming from the island or falling on it
+/* Each island object has a location and can determine if it hits another island object
+/* This is a domain class; do not introduce JavaFX or other GUI components here
+/*
+/* Modified by: eversonb
+ */
 public abstract class IslandObject {
     protected final int width;
     protected final OhCoconutsGameManager containingGame;
