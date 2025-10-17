@@ -10,6 +10,7 @@ import java.util.List;
  /* to process that event
 
  * modified by eversonb
+ * Date modified: 10/17/2025
  */
 public class HitEvent implements GroundSubject, CrabSubject, LaserSubject {
     private final List<LaserObserver> laserObservers = new ArrayList<>();

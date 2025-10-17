@@ -34,7 +34,6 @@ public class GameController {
     public void initialize() {
         System.out.println("Starting");
 
-
         theGame = new OhCoconutsGameManager((int) (gamePane.getPrefHeight() - theBeach.getPrefHeight()),
                 (int) (gamePane.getPrefWidth()), gamePane, coconutKilledLabel, coconutsHitGroundLabel);
 
